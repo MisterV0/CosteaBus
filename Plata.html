@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Money Transfer Animation</title>
+    <style>
+        /* Import a professional, clean font */
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #0070f3;
+            --background-color: #f6f8fa;
+            --container-bg: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --input-bg: #f9fafb;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--background-color);
+            overflow: hidden;
+        }
+
+        .banking-container {
+            width: 420px;
+            background-color: var(--container-bg);
+            padding: 32px 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05), 0 4px 10px rgba(0, 0, 0, 0.02);
+            position: relative;
+            border: 1px solid var(--border-color);
+            overflow: hidden; /* Ensures nothing spills out */
+        }
+
+        .form-wrapper, .confirmation-screen {
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .form-header h2 {
+            color: var(--text-primary);
+            text-align: center;
+            margin: 0 0 8px 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .form-header p {
+            color: var(--text-secondary);
+            text-align: center;
+            margin: 0 0 30px 0;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Manrope', sans-serif;
+            color: var(--text-primary);
+            box-sizing: border-box;
+            caret-color: transparent; /* Hides the actual text cursor */
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .send-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            background-color: var(--primary-color);
+            box-shadow: 0 4px 14px 0 rgba(0, 118, 255, 0.39);
+        }
+
+        .send-button:disabled {
+            background-color: #a0c9ff;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* The Animated Cursor */
+        .animated-cursor {
+            width: 2px;
+            height: 20px;
+            background-color: var(--primary-color);
+            position: absolute;
+            z-index: 10;
+            transition: top 0.6s cubic-bezier(0.65, 0, 0.35, 1), 
+                        left 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+                        opacity 0.4s ease;
+            animation: blink 1.2s infinite;
+            border-radius: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Confirmation Screen Styling */
+        .confirmation-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+
+        .confirmation-icon {
+            width: 72px;
+            height: 72px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e6f7ec;
+            border-radius: 50%;
+            margin-bottom: 24px;
+        }
+
+        .confirmation-icon svg {
+            width: 36px;
+            height: 36px;
+            color: #0d925d;
+        }
+
+        .confirmation-screen h3 {
+            color: var(--text-primary);
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 8px;
+        }
+
+        .confirmation-screen p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin: 0;
+            max-width: 280px;
+        }
+
+        /* Utility classes for transitions */
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+        .visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="banking-container">
+        <!-- The animated cursor element -->
+        <div class="animated-cursor" id="cursor"></div>
+        
+        <!-- Wrapper for the form for easy hiding -->
+        <div id="form-wrapper" class="form-wrapper visible">
+            <div class="form-header">
+                <h2>Send Money</h2>
+                <p>Enter payment details below.</p>
+            </div>
+
+            <form id="transfer-form" onsubmit="return false;">
+                <div class="form-group">
+                    <label for="recipient-name">Recipient Name</label>
+                    <input type="text" id="recipient-name" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="iban">IBAN</label>
+                    <input type="text" id="iban" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount (€)</label>
+                    <input type="text" id="amount" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="description">Reference</label>
+                    <input type="text" id="description" readonly>
+                </div>
+                <button type="button" id="send-button" class="send-button" disabled>Send Payment</button>
+            </form>
+        </div>
+
+        <!-- The final confirmation screen, initially hidden -->
+        <div id="confirmation-screen" class="confirmation-screen hidden">
+            <div class="confirmation-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+            </div>
+            <h3>Payment Sent</h3>
+            <p>Your transaction has been processed successfully.</p>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursor = document.getElementById('cursor');
+            const sendButton = document.getElementById('send-button');
+            const formWrapper = document.getElementById('form-wrapper');
+            const confirmationScreen = document.getElementById('confirmation-screen');
+
+            // --- Configuration for a faster animation ---
+            const typingSpeed = 70;       // ms per character
+            const pauseBetweenFields = 500; // ms to wait after typing
+            const cursorMoveDuration = 800; // ms to wait for cursor to move
+
+            const fields = [
+                { id: 'recipient-name', text: 'Isla Verman' },
+                { id: 'iban',           text: 'NL29 ABNA 0415 8736 25' },
+                // --- THIS LINE IS NOW CORRECTED ---
+                { id: 'amount',         text: '450.00' },
+                { id: 'description',    text: 'Rental Deposit - Oct' }
+            ];
+
+            function moveCursorTo(element) {
+                const rect = element.getBoundingClientRect();
+                const containerRect = element.closest('.banking-container').getBoundingClientRect();
+                cursor.style.top = `${rect.top - containerRect.top + 14}px`;
+                cursor.style.left = `${rect.left - containerRect.left + 16}px`;
+            }
+
+            function typeText(field, callback) {
+                const element = document.getElementById(field.id);
+                let index = 0;
+
+                function type() {
+                    if (index < text.length) {
+                        element.value += text.charAt(index);
+                        const textWidth = getTextWidth(element.value, window.getComputedStyle(element).font);
+                        const containerRect = element.closest('.banking-container').getBoundingClientRect();
+                        const rect = element.getBoundingClientRect();
+                        cursor.style.left = `${rect.left - containerRect.left + 16 + textWidth}px`;
+                        index++;
+                        setTimeout(type, typingSpeed);
+                    } else {
+                        callback();
+                    }
+                }
+                const text = field.text;
+                type();
+            }
+
+            function getTextWidth(text, font) {
+                const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'));
+                const context = canvas.getContext('2d');
+                context.font = font;
+                return context.measureText(text).width;
+            }
+            
+            function showConfirmation() {
+                formWrapper.classList.remove('visible');
+                formWrapper.classList.add('hidden');
+                confirmationScreen.classList.remove('hidden');
+                confirmationScreen.classList.add('visible');
+            }
+
+            async function startAnimation() {
+                for (const field of fields) {
+                    const element = document.getElementById(field.id);
+                    moveCursorTo(element);
+                    await new Promise(resolve => setTimeout(resolve, cursorMoveDuration));
+                    await new Promise(resolve => typeText(field, resolve));
+                    await new Promise(resolve => setTimeout(resolve, pauseBetweenFields));
+                }
+
+                const buttonRect = sendButton.getBoundingClientRect();
+                const containerRect = sendButton.closest('.banking-container').getBoundingClientRect();
+                cursor.style.top = `${buttonRect.top - containerRect.top + (buttonRect.height / 2) - 10}px`;
+                cursor.style.left = `${buttonRect.left - containerRect.left + (buttonRect.width / 2)}px`;
+                await new Promise(resolve => setTimeout(resolve, cursorMoveDuration));
+                
+                cursor.style.opacity = '0';
+                sendButton.disabled = false;
+                
+                setTimeout(showConfirmation, 400);
+            }
+
+            // Start after a brief initial delay
+            setTimeout(startAnimation, 1000);
+        });
+    </script>
+
+</body>
+</html>
