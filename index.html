@@ -43,7 +43,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #FDFCFB 0%, #F8F9FA 100%);
+            background: linear-gradient(135deg, #e8f4f8 0%, #f0f8f8 50%, #f8f4e8 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -55,28 +55,6 @@
         .loader-wrapper.hidden {
             opacity: 0;
             visibility: hidden;
-        }
-        
-        /* Subtle animated background pattern */
-        .loader-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                linear-gradient(30deg, rgba(0, 128, 128, 0.02) 12%, transparent 12.5%, transparent 87%, rgba(0, 128, 128, 0.02) 87.5%, rgba(0, 128, 128, 0.02)),
-                linear-gradient(150deg, rgba(0, 128, 128, 0.02) 12%, transparent 12.5%, transparent 87%, rgba(0, 128, 128, 0.02) 87.5%, rgba(0, 128, 128, 0.02)),
-                linear-gradient(30deg, rgba(0, 128, 128, 0.02) 12%, transparent 12.5%, transparent 87%, rgba(0, 128, 128, 0.02) 87.5%, rgba(0, 128, 128, 0.02)),
-                linear-gradient(150deg, rgba(0, 128, 128, 0.02) 12%, transparent 12.5%, transparent 87%, rgba(0, 128, 128, 0.02) 87.5%, rgba(0, 128, 128, 0.02));
-            background-size: 80px 140px;
-            background-position: 0 0, 0 0, 40px 70px, 40px 70px;
-            animation: patternMove 20s linear infinite;
-        }
-        @keyframes patternMove {
-            0% { background-position: 0 0, 0 0, 40px 70px, 40px 70px; }
-            100% { background-position: 80px 140px, 80px 140px, 120px 210px, 120px 210px; }
         }
         
         .road-loader {
@@ -147,18 +125,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            animation: bounce-bus 0.5s ease-in-out infinite alternate;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
         }
 
         @keyframes move-road {
             from { transform: translateX(-50%) translateY(-80px); }
             to { transform: translateX(-50%) translateY(0px); }
-        }
-        
-        @keyframes bounce-bus {
-            from { transform: translate(-50%, -52%); }
-            to { transform: translate(-50%, -48%); }
         }
         
         .loading-text {
@@ -187,44 +159,6 @@
         @keyframes fill-text {
             0% { width: 0%; }
             100% { width: 100%; }
-        }
-
-        .loading-fact {
-            margin-top: 1.2rem;
-            font-size: 1.05rem;
-            color: var(--text-light);
-            max-width: 350px;
-            text-align: center;
-            height: 45px;
-            line-height: 1.5;
-            padding: 0 1rem;
-        }
-        
-        /* Progress dots */
-        .loading-dots {
-            display: flex;
-            gap: 8px;
-            margin-top: 1.5rem;
-        }
-        .loading-dots span {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--primary-accent);
-            animation: dotPulse 1.4s infinite ease-in-out;
-        }
-        .loading-dots span:nth-child(1) { animation-delay: 0s; }
-        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes dotPulse {
-            0%, 60%, 100% { 
-                transform: scale(0.8);
-                opacity: 0.5;
-            }
-            30% { 
-                transform: scale(1.2);
-                opacity: 1;
-            }
         }
         
         #progress-bar {
@@ -1197,12 +1131,6 @@
             </div>
         </div>
         <div class="loading-text">LOADING...</div>
-        <p class="loading-fact" id="loading-fact"></p>
-        <div class="loading-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
     </div>
 
     <header id="header">
@@ -1340,12 +1268,11 @@
                 <h2 class="animated-element">Galerie Foto</h2>
                 <p class="section-subtitle animated-element">O privire în interiorul autocarelor noastre moderne și în călătoriile noastre.</p>
                 <div class="gallery-grid">
-                    <div class="gallery-item animated-element"><img src="https://images.unsplash.com/photo-1570125909232-eb263c187f33?q=80&w=800&auto=format&fit=crop" alt="Interior autocar modern" loading="lazy"></div>
-                    <div class="gallery-item animated-element"><img src="https://images.unsplash.com/photo-1627443900388-1a89a052194a?q=80&w=800&auto=format&fit=crop" alt="Scaune confortabile autocar" loading="lazy"></div>
-                    <div class="gallery-item animated-element"><img src="https://images.unsplash.com/photo-1605501284344-0133a854d142?q=80&w=800&auto=format&fit=crop" alt="Autocar in apus" loading="lazy"></div>
-                    <div class="gallery-item animated-element"><img src="https://images.unsplash.com/photo-1599846765583-e696a242c84a?q=80&w=800&auto=format&fit=crop" alt="Autocar pe autostrada" loading="lazy"></div>
-                    <div class="gallery-item animated-element"><img src="https://images.unsplash.com/photo-1632851463991-230537458145?q=80&w=800&auto=format&fit=crop" alt="Sofer la volan" loading="lazy"></div>
-                    <div class="gallery-item animated-element"><img src="https://images.unsplash.com/photo-1563461660947-69e38c5a20cb?q=80&w=800&auto=format&fit=crop" alt="Pasageri in autocar" loading="lazy"></div>
+                    <div class="gallery-item animated-element"><img src="ModernBus.jpeg" alt="Interior autocar modern" loading="lazy"></div>
+                    <div class="gallery-item animated-element"><img src="BusDawn.webp" alt="Autocar in apus" loading="lazy"></div>
+                    <div class="gallery-item animated-element"><img src="BusHighway.webp" alt="Autocar pe autostrada" loading="lazy"></div>
+                    <div class="gallery-item animated-element"><img src="BusDriver.jpg" alt="Sofer la volan" loading="lazy"></div>
+                    <div class="gallery-item animated-element"><img src="BusPassengers.jpg" alt="Pasageri in autocar" loading="lazy"></div>
                 </div>
             </div>
         </section>
@@ -1521,29 +1448,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const loader = document.querySelector('.loader-wrapper');
-            let factInterval;
-
-            const loadingFactEl = document.getElementById('loading-fact');
-            const travelFacts = [
-                "Pregătim autocarul pentru o călătorie confortabilă...",
-                "Știați că o călătorie cu autocarul este mai ecologică?",
-                "Sfat de călătorie: Nu uitați perna pentru gât!",
-                "Verificăm ultimele detalii pentru siguranța dumneavoastră...",
-                "În curând veți porni într-o nouă aventură!"
-            ];
-
-            function showRandomFact() {
-                const randomIndex = Math.floor(Math.random() * travelFacts.length);
-                loadingFactEl.textContent = travelFacts[randomIndex];
-            }
-            
-            showRandomFact();
-            factInterval = setInterval(showRandomFact, 3000);
 
             window.addEventListener('load', () => {
                  setTimeout(() => { 
                     loader.classList.add('hidden');
-                    clearInterval(factInterval);
                  }, 800);
             });
 
